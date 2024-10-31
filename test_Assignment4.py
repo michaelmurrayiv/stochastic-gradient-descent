@@ -30,8 +30,6 @@ R_func = lambda w1,w2,b: 1/4*(F1_func(w1,w2,b)+F2_func(w1,w2,b)+F3_func(w1,w2,b)
 def test_1():    
     solution_thetas = answers['minimize_gradient_descent']
     answer_thetas = gradient_descent.minimize_gradient_descent([gradients_w1,gradients_w2,gradients_b],0.1,[0.5,-0.2,2.5])
-    print("solutions = ", solution_thetas)
-    print("my answers =  ", answer_thetas)
     assert np.all(np.abs(np.array(solution_thetas)-np.array(answer_thetas)) <= 0.0001)
     
 def test_2():    

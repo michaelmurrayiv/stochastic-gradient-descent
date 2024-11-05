@@ -1,5 +1,5 @@
 import torch
-
+import random
 import numpy as np
 import copy
 
@@ -89,10 +89,9 @@ def minimize_stochastic_gradient_descent(gradient_funcs,alpha,theta0,tol=1e-10,m
         theta = [0,0,0]
         i = 0
         for variable_funcs in gradient_funcs:
-            sum = 0
-            for gradient in variable_funcs:
-                sum += gradient(*thetas[-1])
-            theta[i] = thetas[-1][i] - alpha * .25 * sum
+            val = random.randint(0, len(variable_funcs)-1) # choose random gradient function
+            gradient = variable_funcs[val](*thetas[-1])
+            theta[i] = thetas[-1][i] - alpha * gradient
             i += 1
         changes = [abs(theta[i] - thetas[-1][i]) for i in range(len(theta))]
         change_theta = max(changes)
@@ -102,7 +101,7 @@ def minimize_stochastic_gradient_descent(gradient_funcs,alpha,theta0,tol=1e-10,m
     
     return thetas
 
-def minimize_stochastic_gradient_descent_analytically(J_func,alpha,theta0,h,tol=1e-10,max_iter=500,debug=True):
+def minimize_stochastic_gradient_descent_analytically(F_funcs, alpha,theta0,h,tol=1e-10,max_iter=500,debug=True):
     debug=False
     """
     You can stop optimizing when the max absolute change in theta is < tol.
@@ -110,19 +109,19 @@ def minimize_stochastic_gradient_descent_analytically(J_func,alpha,theta0,h,tol=
     Make sure you use the theta from the previous iteration for all your calculations until the next "epoch". In other words, make sure you are making copies correctly and not updated say w1 and then using it to help you update w2. The updates to the parameters should be done in parallel.
     """
 
-
     change_theta = 1
     num_iter = 0 
     thetas = [theta0]
 
     while change_theta > tol and num_iter < max_iter:
         theta = thetas[-1][:]
-        start_val = J_func(*theta)
+        val = random.randint(0, len(F_funcs)-1) # choose random gradient function
+        start_val = F_funcs[val](*theta)
         for i in range(len(theta)):
             theta_copy = thetas[-1][:]
             theta_copy[i] += h
             
-            J_h = J_func(*theta_copy)
+            J_h = F_funcs[val](*theta_copy)
             grad = (J_h - start_val)/h
             
             theta[i] = theta[i] - alpha * grad

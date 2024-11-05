@@ -26,6 +26,7 @@ F2_func = lambda w1,w2,b: (w2+b-1.5)**2
 F3_func = lambda w1,w2,b: (w1+b-1.75)**2
 F4_func = lambda w1,w2,b: (w1+w2+b-2.25)**2
 R_func = lambda w1,w2,b: 1/4*(F1_func(w1,w2,b)+F2_func(w1,w2,b)+F3_func(w1,w2,b)+F4_func(w1,w2,b))
+F_funcs = [F1_func, F2_func, F3_func, F4_func]
 
 def test_1():    
     solution_thetas = answers['minimize_gradient_descent']
@@ -36,3 +37,18 @@ def test_2():
     solution_thetas = answers['minimize_gradient_descent_analytically']
     answer_thetas = gradient_descent.minimize_gradient_descent_analytically(R_func,0.1,[0.5,-0.2,2.5],0.01)
     assert np.all(np.abs(np.array(solution_thetas)-np.array(answer_thetas)) <= 0.0001)
+
+# test that SGD values reach expected values
+def test_3():    
+    solution_thetas = answers['minimize_gradient_descent']
+    answer_thetas = gradient_descent.minimize_stochastic_gradient_descent([gradients_w1,gradients_w2,gradients_b],0.1,[0.5,-0.2,2.5])
+    for i in range(len(solution_thetas[-1])):
+        assert abs(solution_thetas[-1][i] - answer_thetas[-1][i]) <= 0.0001
+
+# test that SGD Analytical values reach expected values
+def test_4():    
+    solution_thetas = answers['minimize_gradient_descent_analytically']
+    answer_thetas = gradient_descent.minimize_stochastic_gradient_descent_analytically(F_funcs,0.1,[0.5,-0.2,2.5],0.01)
+    print(answer_thetas[-1])
+    for i in range(len(solution_thetas[-1])):
+        assert abs(solution_thetas[-1][i] - answer_thetas[-1][i]) <= 0.0001

@@ -52,3 +52,18 @@ def test_4():
     print(answer_thetas[-1])
     for i in range(len(solution_thetas[-1])):
         assert abs(solution_thetas[-1][i] - answer_thetas[-1][i]) <= 0.0001
+
+# SGD with momentum
+def test_5():    
+    solution_thetas = answers['minimize_gradient_descent']
+    answer_thetas = gradient_descent.minimize_sgd_momentum([gradients_w1,gradients_w2,gradients_b],0.1,[0.5,-0.2,2.5])
+    for i in range(len(solution_thetas[-1])):
+        assert abs(solution_thetas[-1][i] - answer_thetas[-1][i]) <= 0.0001
+
+# SGD Analytical with momentum
+def test_6():    
+    solution_thetas = answers['minimize_gradient_descent_analytically']
+    answer_thetas = gradient_descent.minimize_sgd_momentum_analytically(F_funcs,0.1,[0.5,-0.2,2.5],0.01)
+    print(answer_thetas[-1])
+    for i in range(len(solution_thetas[-1])):
+        assert abs(solution_thetas[-1][i] - answer_thetas[-1][i]) <= 0.0001

@@ -49,7 +49,6 @@ def test_3():
 def test_4():    
     solution_thetas = answers['minimize_gradient_descent_analytically']
     answer_thetas = gradient_descent.minimize_stochastic_gradient_descent_analytically(F_funcs,0.1,[0.5,-0.2,2.5],0.01)
-    print(answer_thetas[-1])
     for i in range(len(solution_thetas[-1])):
         assert abs(solution_thetas[-1][i] - answer_thetas[-1][i]) <= 0.0001
 
@@ -64,7 +63,6 @@ def test_5():
 def test_6():    
     solution_thetas = answers['minimize_gradient_descent_analytically']
     answer_thetas = gradient_descent.minimize_sgd_momentum_analytically(F_funcs,0.1,[0.5,-0.2,2.5],0.01)
-    print(answer_thetas[-1])
     for i in range(len(solution_thetas[-1])):
         assert abs(solution_thetas[-1][i] - answer_thetas[-1][i]) <= 0.0001
 
@@ -79,6 +77,19 @@ def test_7():
 def test_8():    
     solution_thetas = answers['minimize_gradient_descent_analytically']
     answer_thetas = gradient_descent.minimize_sgd_adam_analytically(F_funcs,0.1,[0.5,-0.2,2.5],0.01)
-    print(answer_thetas[-1])
     for i in range(len(solution_thetas[-1])):
         assert abs(solution_thetas[-1][i] - answer_thetas[-1][i]) <= 0.0001
+
+def test_9(): # test convergence speed
+    solution_thetas = answers['minimize_gradient_descent']
+    answer_thetas = gradient_descent.minimize_sgd_adam([gradients_w1,gradients_w2,gradients_b],0.1,[0.5,-0.2,2.5])
+    print(pd.DataFrame(solution_thetas[-5:]))
+    print(pd.DataFrame(answer_thetas[-5:]))
+    j = 0
+    for row, _ in enumerate(answer_thetas):
+        if abs(solution_thetas[-1][0] - answer_thetas[row][0]) <= 0.0001 and abs(solution_thetas[-1][1] - answer_thetas[row][1]) <= 0.0001 and abs(solution_thetas[-1][2] - answer_thetas[row][2]) <= 0.0001:
+            print("row = ", j)
+            break
+        j+=1
+    assert j < len(solution_thetas)
+

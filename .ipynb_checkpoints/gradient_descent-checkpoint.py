@@ -163,9 +163,9 @@ def minimize_sgd_momentum(gradient_funcs,alpha,theta0,tol=1e-10,max_iter=500):
             val = random.randint(0, len(variable_funcs)-1) # choose random gradient function
             gradient = variable_funcs[val](*thetas[-1])
 
-            change = -alpha * gradient + velocity[i] * beta
+            velocity[i] = -alpha * gradient + velocity[i] * beta
             
-            theta[i] = thetas[-1][i] + change
+            theta[i] = thetas[-1][i] + velocity[i]
             
             i += 1
             

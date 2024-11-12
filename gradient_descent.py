@@ -163,9 +163,9 @@ def minimize_sgd_momentum(gradient_funcs,alpha,theta0,tol=1e-10,max_iter=500):
             val = random.randint(0, len(variable_funcs)-1) # choose random gradient function
             gradient = variable_funcs[val](*thetas[-1])
 
-            change = -alpha * gradient + velocity[i] * beta
+            velocity[i] = -alpha * gradient + velocity[i] * beta
             
-            theta[i] = thetas[-1][i] + change
+            theta[i] = thetas[-1][i] + velocity[i]
             
             i += 1
             
@@ -218,7 +218,7 @@ def minimize_sgd_momentum_analytically(F_funcs, alpha,theta0,h,tol=1e-10,max_ite
 
     return thetas
 
-def minimize_sgd_adam(gradient_funcs,alpha,theta0,tol=1e-10,max_iter=5000):
+def minimize_sgd_adam(gradient_funcs,alpha,theta0,tol=1e-10,max_iter=500):
     """
     You can stop optimizing when the max absolute change in theta is < tol.
     You can also stop when you reach max_iterations.

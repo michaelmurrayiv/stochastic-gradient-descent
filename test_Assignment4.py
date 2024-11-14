@@ -93,3 +93,4 @@ def test_9(): # test convergence speed
         j+=1
     assert j < len(solution_thetas)
 
+
